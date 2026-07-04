@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>設定 — aruaru-easyweb</title>
+<link rel="stylesheet" href="/static/css/app.css">
+<style>
+  .form-group{display:flex;flex-direction:column;gap:.3rem;margin-bottom:1rem}
+  .form-group label{font-size:.82rem;color:var(--muted)}
+  .form-group input{padding:.65rem .9rem;background:var(--bg);border:1px solid var(--border);
+    border-radius:8px;color:var(--text);font-size:.95rem;width:100%}
+  .form-group input:focus{outline:none;border-color:var(--primary)}
+  .form-group .hint{font-size:.78rem;color:var(--muted);margin-top:.2rem}
+  .saved-banner{background:rgba(34,197,94,.12);border:1px solid var(--success);
+    color:var(--success);padding:.75rem 1rem;border-radius:8px;margin-bottom:1rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <span class="logo">🌐 aruaru-easyweb</span>
+  <div class="nav-links">
+    <a href="/">ダッシュボード</a>
+    <a href="/anthropic">🤖 AI 接続</a>
+    <form action="/api/auth/logout" method="POST" style="display:inline">
+      <button class="btn-logout">ログアウト</button>
+    </form>
+  </div>
+</nav>
+
+<main>
+  <div class="card" style="max-width:560px;margin:0 auto">
+    <h2 style="margin-bottom:1.2rem">⚙️ アプリ設定</h2>
+
+    <div id="savedBanner" class="saved-banner hidden">✅ 設定を保存しました</div>
+
+    <form action="/settings" method="POST">
+
+      <p class="section-title" style="font-size:.82rem;color:var(--primary);margin-bottom:.8rem">基本設定</p>
+
+      <div class="form-group">
+        <label>アプリの URL</label>
+        <input type="url" name="app_url" value="{{app_url}}" required>
+      </div>
+      <div class="form-group">
+        <label>管理者メールアドレス</label>
+        <input type="email" name="admin_email" value="{{admin_email}}" required>
+      </div>
+      <div class="form-group">
+        <label>ログインリンクの有効期限（分）</label>
+        <input type="number" name="token_expiry_minutes" value="{{token_expiry_minutes}}" min="5" max="60">
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:1.2rem 0">
+      <p style="font-size:.82rem;color:var(--primary);margin-bottom:.8rem">SMTP 設定</p>
+
+      <div class="form-group">
+        <label>SMTP サーバー</label>
+        <input type="text" name="smtp_host" value="{{smtp_host}}" required>
+      </div>
+      <div class="form-group">
+        <label>SMTP ポート</label>
+        <input type="number" name="smtp_port" value="{{smtp_port}}" required>
+      </div>
+      <div class="form-group">
+        <label>メールアドレス</label>
+        <input type="email" name="smtp_username" value="{{smtp_username}}" required>
+      </div>
+      <div class="form-group">
+        <label>パスワード（変更しない場合は空欄のまま）</label>
+        <input type="password" name="smtp_password" placeholder="変更する場合のみ入力">
+      </div>
+      <div class="form-group">
+        <label>差出人表示名</label>
+        <input type="text" name="smtp_from" value="{{smtp_from}}">
+      </div>
+
+      <button type="submit" class="btn-primary" style="width:100%;padding:.75rem;margin-top:.5rem;font-size:1rem">
+        設定を保存
+      </button>
+    </form>
+  </div>
+</main>
+<script>
+  if (location.search.includes('saved=1')) {
+    document.getElementById('savedBanner').classList.remove('hidden');
+    setTimeout(() => document.getElementById('savedBanner').classList.add('hidden'), 3000);
+  }
+</script>
+</body>
+</html>

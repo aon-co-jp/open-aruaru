@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/mobile-schema.json",
+  "identifier": "default",
+  "description": "aruaru-android main webview",
+  "windows": ["main"],
+  "permissions": ["core:default", "opener:default"]
+}

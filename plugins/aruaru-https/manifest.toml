@@ -1,0 +1,8 @@
+id = "aruaru-https"
+name = "aruaru-https"
+version = "0.1.0"
+description = "HTTPS 自動監視・Let's Encrypt 自動設定"
+kind = "plugin"
+requires = ["aruaru-domain", "aruaru-vhost"]
+provides = ["https", "letsencrypt", "auto-https"]
+detect_conflicts = ["kusanagi-ssl", "certbot-standalone"]

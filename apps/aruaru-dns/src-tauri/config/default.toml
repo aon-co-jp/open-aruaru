@@ -1,0 +1,10 @@
+[postgres]
+url = "postgres://aruaru:aruaru@127.0.0.1:5432/aruaru"
+
+[aruaru_db]
+url = "postgres://root@127.0.0.1:5433/aruaru_dns"
+source_path = "F:\\aruaru\\aruaru-db"
+sync_enabled = true
+
+[nameservers]
+list = ["ns1.example.com", "ns2.example.com"]

@@ -1,0 +1,61 @@
+:root{--bg:#0f172a;--surface:#1e293b;--border:#334155;--primary:#3b82f6;
+  --success:#22c55e;--warning:#f59e0b;--danger:#ef4444;--text:#e2e8f0;--muted:#94a3b8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif}
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.5rem;
+  background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.logo{font-size:1.1rem;font-weight:700}
+.nav-links{display:flex;align-items:center;gap:1rem}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.88rem}
+main{max-width:1000px;margin:1.5rem auto;padding:0 1rem;display:flex;flex-direction:column;gap:1.2rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.4rem}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.card h2{font-size:1rem;font-weight:600}
+.btn-primary{background:var(--primary);color:#fff;border:none;padding:.45rem 1.1rem;
+  border-radius:7px;cursor:pointer;font-size:.88rem;font-weight:500}
+.btn-primary:hover{opacity:.88}
+.btn-secondary{background:transparent;border:1px solid var(--border);color:var(--muted);
+  padding:.45rem 1rem;border-radius:7px;cursor:pointer;font-size:.88rem}
+.badge{background:rgba(59,130,246,.18);color:var(--primary);font-size:.75rem;
+  padding:.1rem .4rem;border-radius:4px;margin-left:.3rem}
+.required{color:var(--danger)}
+.hint{color:var(--muted);font-size:.8rem;margin-bottom:.6rem}
+.loading{color:var(--muted);padding:1rem;text-align:center}
+.hidden{display:none!important}
+/* VPS カード */
+.vps-item{display:flex;align-items:center;gap:.9rem;padding:.75rem .9rem;
+  border:1px solid var(--border);border-radius:9px;margin-top:.65rem}
+.vps-info{flex:1}
+.vps-name{font-weight:600;font-size:.95rem}
+.vps-ip{color:var(--muted);font-size:.82rem;margin-top:.1rem}
+.status-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:.4rem}
+.status-online{background:var(--success)} .status-offline{background:var(--danger)}
+.status-unknown{background:var(--muted)}
+.vps-actions{display:flex;gap:.5rem}
+.btn-term{background:rgba(59,130,246,.15);color:var(--primary);border:1px solid rgba(59,130,246,.3);
+  padding:.3rem .75rem;border-radius:6px;cursor:pointer;font-size:.82rem;text-decoration:none;display:inline-block}
+.btn-files{background:rgba(34,197,94,.1);color:var(--success);border:1px solid rgba(34,197,94,.25);
+  padding:.3rem .75rem;border-radius:6px;cursor:pointer;font-size:.82rem;text-decoration:none;display:inline-block}
+/* 鍵カード */
+.key-item{display:flex;align-items:center;gap:.9rem;padding:.65rem .9rem;
+  border:1px solid var(--border);border-radius:9px;margin-top:.65rem}
+.key-info{flex:1}
+.key-name{font-weight:600;font-size:.9rem}
+.key-fp{color:var(--muted);font-size:.75rem;font-family:monospace;margin-top:.15rem;word-break:break-all}
+.key-result{background:var(--bg);border:1px solid var(--success);border-radius:8px;
+  padding:.9rem;margin-top:1rem;font-size:.82rem;color:var(--success)}
+.key-result textarea{width:100%;background:transparent;border:none;color:var(--text);
+  font-family:monospace;font-size:.78rem;resize:vertical;margin-top:.4rem;min-height:60px}
+/* モーダル */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);
+  display:flex;align-items:center;justify-content:center;z-index:100}
+.modal.hidden{display:none}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:1.8rem;width:420px;display:flex;flex-direction:column;gap:.8rem;max-height:90vh;overflow-y:auto}
+.modal-box h3{font-size:1.05rem;font-weight:600}
+.modal-box label{font-size:.82rem;color:var(--muted)}
+.modal-box input,.modal-box select{width:100%;padding:.6rem .85rem;background:var(--bg);
+  border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:.92rem}
+.radio-group{display:flex;gap:1.2rem}
+.radio-group label{color:var(--text);font-size:.88rem;display:flex;align-items:center;gap:.35rem}
+.modal-actions{display:flex;gap:.6rem;margin-top:.3rem}

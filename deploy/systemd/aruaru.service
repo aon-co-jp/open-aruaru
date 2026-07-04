@@ -1,0 +1,19 @@
+[Unit]
+Description=aruaru Ver 0.1 (PostgreSQL)
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/aruaru
+Environment=ARUARU_ROOT=/opt/aruaru
+Environment=ARUARU_DATA_DIR=/opt/aruaru/data
+Environment=ARUARU_DATABASE_URL=postgres://aruaru:aruaru@127.0.0.1:5432/aruaru
+# SMTPパスワード（config/default.toml に書かない場合はここに設定）
+# Environment=ARUARU_SMTP_PASSWORD=your-smtp-password
+ExecStart=/opt/aruaru/bin/aruaru serve
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

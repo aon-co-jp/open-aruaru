@@ -1,0 +1,39 @@
+body {
+  background: #0f1419;
+  color: #e7e9ea;
+  min-height: 100vh;
+}
+
+.card {
+  background: #16202a;
+}
+
+.table-dark {
+  --bs-table-bg: transparent;
+}
+
+.form-control,
+.form-select {
+  background: #0f1419;
+  border-color: #38444d;
+  color: #e7e9ea;
+}
+
+.form-control:focus {
+  background: #0f1419;
+  color: #e7e9ea;
+  border-color: #1d9bf0;
+  box-shadow: 0 0 0 0.2rem rgba(29, 155, 240, 0.2);
+}
+
+a {
+  color: #1d9bf0;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+  color: #fff;
+}
+
+code {
+  color: #8ecdf8;
+}

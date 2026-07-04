@@ -1,0 +1,16 @@
+{
+  "name": "aruaru-wundergraph",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "wundergraph": "wundergraph",
+    "generate": "wundergraph generate",
+    "start": "wundergraph start"
+  },
+  "dependencies": {
+    "@wundergraph/sdk": "^0.184.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

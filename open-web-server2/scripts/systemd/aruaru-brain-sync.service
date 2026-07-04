@@ -1,0 +1,25 @@
+# aruaru-brain-sync.service
+# AlmaLinux / RHEL / Rocky Linux / Ubuntu / Linux Mint 共通で使えるsystemdユニット。
+# RHEL系ディストリはcronよりsystemdタイマーが標準的なため、こちらを正式手段とする。
+#
+# 配置先: /etc/systemd/system/aruaru-brain-sync.service
+# ExecStart のパスはご自身の展開先(例: f:\open-aruaru を移植した /opt/open-aruaru 等)に
+# 合わせて書き換えてください。
+#
+# 有効化:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now aruaru-brain-sync.timer
+#
+# 動作確認:
+#   systemctl status aruaru-brain-sync.timer
+#   journalctl -u aruaru-brain-sync.service -f
+
+[Unit]
+Description=open-web-server: sync learned "brain" (aruaru-brain.json) to Google Drive via rclone
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+Environment=ARUARU_DATA_DIR=/opt/open-aruaru/open-web-server/data
+ExecStart=/usr/bin/bash /opt/open-aruaru/open-web-server/scripts/sync-brain.sh push

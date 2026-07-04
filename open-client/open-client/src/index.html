@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>open-client</title>
+<style>
+  body { font-family: system-ui, sans-serif; background:#0b0e14; color:#e6e6e6; margin:0; padding:2rem; }
+  h1 { font-weight:600; }
+  code { background:#1b202b; padding:2px 6px; border-radius:4px; }
+  #status { margin-top:1rem; padding:1rem; border:1px solid #2a3242; border-radius:8px; }
+</style>
+</head>
+<body>
+  <h1>open-aruaru client</h1>
+  <p>Tauri v2 シェル。<code>commit_write</code> / <code>quorum_read</code> は
+     Rustコアから直接 open-runo (QUIC) に接続します。</p>
+  <div id="status">起動中…</div>
+  <script type="module">
+    const { invoke } = window.__TAURI__.core;
+    document.getElementById('status').textContent = 'Tauri IPC 準備完了。UIフレームワーク(任意: Svelte/React等)をここに統合してください。';
+  </script>
+</body>
+</html>

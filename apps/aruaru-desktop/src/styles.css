@@ -1,0 +1,226 @@
+:root {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #1a1a2e;
+  background: #f4f6fb;
+  line-height: 1.5;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; min-height: 100vh; }
+
+#app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+header h1 { margin: 0; font-size: 1.75rem; }
+.tagline { color: #555; margin: 0.25rem 0 1rem; }
+
+#tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+#tabs button {
+  border: 1px solid #c5cee0;
+  background: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#tabs button.active {
+  background: #3d5afe;
+  color: #fff;
+  border-color: #3d5afe;
+}
+
+.panel {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.panel h2 { margin-top: 0; font-size: 1.15rem; }
+
+.field { margin-bottom: 1rem; }
+.field label { display: block; font-weight: 600; margin-bottom: 0.35rem; }
+.field input, .field select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+
+button.primary {
+  background: #3d5afe;
+  color: #fff;
+  border: none;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #eef1f8;
+  border: 1px solid #c5cee0;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.msg { margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px; background: #eef8ee; }
+.msg.error { background: #fdecea; color: #b71c1c; }
+
+.list { list-style: none; padding: 0; margin: 0; }
+.list li {
+  padding: 0.75rem;
+  border: 1px solid #e0e4ef;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.feature-cat h3 { font-size: 1rem; color: #555; margin: 1rem 0 0.5rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  background: #eef1f8;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  margin-left: 0.35rem;
+}
+.feature-out {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  background: #1a1a2e;
+  color: #e8eaf6;
+  padding: 0.5rem;
+  border-radius: 6px;
+  overflow: auto;
+  max-height: 160px;
+}
+
+.wizard-checks { list-style: none; padding: 0; margin: 1rem 0; }
+.wizard-checks li { padding: 0.5rem 0.75rem; border-radius: 8px; margin-bottom: 0.35rem; border: 1px solid #e0e4ef; }
+.wizard-checks li.ok { border-color: #a5d6a7; background: #f1f8f4; }
+.wizard-checks li.ng { border-color: #ef9a9a; background: #fff8f8; }
+.checkbox { display: flex; align-items: center; gap: 0.5rem; margin: 0.75rem 0; font-size: 0.9rem; }
+.small-muted { font-size: 0.85rem; color: #666; }
+.text-muted { color: #888; }
+
+.metric { margin-bottom: 0.75rem; }
+.metric-head { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem; }
+.metric-bar { height: 8px; background: #e8eaf6; border-radius: 4px; overflow: hidden; }
+.metric-fill { height: 100%; border-radius: 4px; }
+.metric-fill.ok { background: #4caf50; }
+.metric-fill.warn { background: #ff9800; }
+.metric-fill.danger { background: #f44336; }
+.status-row { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.85rem; margin: 0.75rem 0; }
+.badge { font-size: 0.75rem; background: #eef1f8; padding: 0.15rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; }
+
+footer {
+  margin-top: 1.5rem;
+  color: #777;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+footer #server-status.ok,
+footer #vps-status.ok { color: #2e7d32; }
+
+footer #server-status.ng,
+footer #vps-status.ng { color: #c62828; }
+
+.vps-status-card {
+  border: 1px solid #e0e4ef;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: #fafbff;
+}
+
+.vps-status-card.ok { border-color: #a5d6a7; }
+.vps-status-card.ng { border-color: #ef9a9a; background: #fff8f8; }
+
+.vps-status-head { font-weight: 600; margin-bottom: 0.75rem; }
+.status-ok { color: #2e7d32; }
+.status-ng { color: #c62828; }
+
+.vps-status-table {
+  width: 100%;
+  font-size: 0.9rem;
+  border-collapse: collapse;
+}
+
+.vps-status-table th {
+  text-align: left;
+  width: 8rem;
+  color: #555;
+  padding: 0.2rem 0.5rem 0.2rem 0;
+  vertical-align: top;
+}
+
+.vps-status-table td {
+  word-break: break-all;
+  padding: 0.2rem 0;
+}
+
+code { background: #f0f2f8; padding: 0.1rem 0.35rem; border-radius: 4px; }
+
+.handoff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 720px) {
+  .handoff-grid { grid-template-columns: 1fr; }
+}
+
+.handoff-card {
+  border: 1px solid #c5cee0;
+  border-radius: 10px;
+  padding: 1rem;
+  background: #fff;
+}
+
+.handoff-card h3 { margin-top: 0; font-size: 1rem; }
+
+.handoff-pre {
+  margin-top: 0.75rem;
+  max-height: 220px;
+  overflow: auto;
+  font-size: 0.75rem;
+  background: #1a1a2e;
+  color: #e8eaf6;
+  padding: 0.75rem;
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+.ai-list { margin-top: 0.75rem; }
+.ai-item {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  background: #fafbff;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  background: #e8eaf6;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  margin-left: 0.25rem;
+}

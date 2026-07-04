@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "aruaru-easyweb",
+    "aruaru-core",
+    "aruaru-ai-core",
+]
+resolver = "2"

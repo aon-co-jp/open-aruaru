@@ -1,0 +1,9 @@
+{
+  "name": "aruaru-web",
+  "short_name": "aruaru",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d6efd",
+  "description": "aruaru platform web UI with offline cache"
+}

@@ -1,0 +1,33 @@
+# aruaru-OS-Recovery — デフォルト設定（インストール時 data/recovery/config.toml にコピー）
+
+[footprint]
+# データドライブ直下に残す識別ファイル名（OS 再インストール後のスキャン用）
+marker_file = ".aruaru-footprint.json"
+
+[drive]
+# OS (通常 C:) とアプリ+DATA を分離する
+os_drive = "C:"
+# 空なら初回セットアップで選択。例: "E:", "F:", "\\\\NAS\\share\\aruaru"
+data_drive = ""
+
+[isolation]
+# true: アプリ本体も data_drive 上に置く（C: にはショートカットのみ）
+app_on_data_drive = true
+# true: OS 再インストール後に footprint から自動でパスを復元
+auto_restore_access = true
+
+[backup]
+enabled = true
+schedule = "daily"
+retain_days = 30
+# ローカルバックアップ先（data_drive 上）
+local_dir = "recovery/backups"
+
+[sync]
+enabled = false
+# 例: ["\\\\NAS\\aruaru-backup", "D:\\mirror"]
+targets = []
+
+[migration]
+# 引越し先候補を記録（UI から追加）
+allowed_targets = ["local_drive", "nas", "cloud_stub"]

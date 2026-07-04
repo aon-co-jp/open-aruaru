@@ -1,0 +1,8 @@
+id = "aruaru-vhost"
+name = "aruaru-vhost"
+version = "0.1.0"
+description = "VirtualHost 設定"
+kind = "plugin"
+requires = ["aruaru-domain"]
+provides = ["vhost"]
+detect_conflicts = ["kusanagi-vhost"]

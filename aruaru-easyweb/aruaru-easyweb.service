@@ -1,0 +1,14 @@
+[Unit]
+Description=aruaru-easyweb — 第二の KUSANAGI / VPS Web Server Manager
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/open-aruaru-easyweb
+ExecStart=/open-aruaru-easyweb/aruaru-easyweb
+Restart=always
+RestartSec=3
+Environment=RUST_LOG=info
+
+[Install]
+WantedBy=multi-user.target

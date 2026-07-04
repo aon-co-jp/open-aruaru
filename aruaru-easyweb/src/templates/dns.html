@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DNS 管理 — aruaru</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #333; }
+  header { background: #1a1a2e; color: #fff; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+  header h1 { font-size: 1.2rem; font-weight: 600; }
+  header a { color: #aaa; text-decoration: none; font-size: 0.9rem; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .grid { display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
+  .card { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  h2 { font-size: 1rem; font-weight: 600; margin-bottom: 14px; color: #1a1a2e; }
+  label { display: block; font-size: 0.82rem; font-weight: 500; color: #555; margin-bottom: 4px; }
+  input, select { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; margin-bottom: 10px; }
+  button { padding: 8px 18px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.88rem; font-weight: 500; }
+  .btn-primary { background: #4f46e5; color: #fff; }
+  .btn-danger  { background: #ef4444; color: #fff; padding: 4px 10px; font-size: 0.8rem; }
+  .btn-success { background: #10b981; color: #fff; }
+  .msg { font-size: 0.85rem; padding: 8px 12px; border-radius: 6px; margin-top: 8px; }
+  .msg.ok  { background: #d1fae5; color: #065f46; }
+  .msg.err { background: #fee2e2; color: #991b1b; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th { background: #f8f9fa; padding: 8px 10px; text-align: left; font-weight: 600; border-bottom: 2px solid #e5e7eb; }
+  td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; word-break: break-all; }
+  .provider-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: #f8f9fa; border-radius: 6px; margin-bottom: 8px; cursor: pointer; border: 2px solid transparent; }
+  .provider-item.active { border-color: #4f46e5; background: #eef2ff; }
+  .provider-item span { font-size: 0.88rem; }
+  .provider-badge { font-size: 0.75rem; background: #e0e7ff; color: #4338ca; padding: 2px 8px; border-radius: 99px; }
+  .section-actions { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
+  #zoneSelect { width: auto; min-width: 200px; margin-bottom: 0; }
+  .empty { color: #999; font-size: 0.88rem; text-align: center; padding: 30px 0; }
+  .tabs { display: flex; gap: 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 16px; }
+  .tab { padding: 8px 18px; font-size: 0.88rem; font-weight: 500; cursor: pointer; color: #666; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+  .tab.active { color: #4f46e5; border-bottom-color: #4f46e5; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌐 DNS 管理</h1>
+  <a href="/">← ダッシュボード</a>
+</header>
+
+<div class="container">
+  <div class="grid">
+
+    <!-- 左：プロバイダー管理 -->
+    <div>
+      <div class="card">
+        <h2>DNS プロバイダー</h2>
+        <div id="providerList"><p class="empty">読み込み中…</p></div>
+        <hr style="margin:14px 0; border:none; border-top:1px solid #eee;">
+        <h2>プロバイダー登録</h2>
+
+        <label>種類</label>
+        <select id="provType" onchange="onProvTypeChange()">
+          <option value="cloudflare">Cloudflare</option>
+          <option value="conoha">ConoHa</option>
+          <option value="value_domain">Value Domain</option>
+        </select>
+
+        <label>ラベル（任意の名前）</label>
+        <input id="provLabel" type="text" placeholder="例: 本番CF">
+
+        <div id="cfFields">
+          <label>API Token（Cloudflare）</label>
+          <input id="cfToken" type="password" placeholder="Bearer Token">
+        </div>
+
+        <div id="conohaFields" style="display:none">
+          <label>ユーザー名（api_key）</label>
+          <input id="conohaUser" type="text">
+          <label>パスワード（api_token）</label>
+          <input id="conohaPass" type="password">
+          <label>テナント名（email 欄）</label>
+          <input id="conohaTenant" type="text">
+        </div>
+
+        <div id="vdFields" style="display:none">
+          <label>API Token（Value Domain）</label>
+          <input id="vdToken" type="password" placeholder="Bearer Token">
+        </div>
+
+        <button class="btn-primary" onclick="saveProvider()">登録</button>
+        <div id="provMsg"></div>
+      </div>
+    </div>
+
+    <!-- 右：ゾーン & レコード -->
+    <div>
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('records')">DNS レコード</div>
+          <div class="tab" onclick="switchTab('add')">レコード追加</div>
+          <div class="tab" onclick="switchTab('auto')">自動登録</div>
+        </div>
+
+        <!-- レコード一覧 -->
+        <div id="tab-records" class="tab-panel active">
+          <div class="section-actions">
+            <select id="zoneSelect" onchange="loadRecords()"><option value="">— ゾーン選択 —</option></select>
+            <button class="btn-primary" onclick="loadZones()" style="white-space:nowrap">ゾーン取得</button>
+          </div>
+          <div id="recordsArea"><p class="empty">プロバイダーを選択してゾーンを取得してください。</p></div>
+        </div>
+
+        <!-- レコード追加 -->
+        <div id="tab-add" class="tab-panel">
+          <div class="form-row">
+            <div>
+              <label>タイプ</label>
+              <select id="addType">
+                <option>A</option><option>AAAA</option><option>CNAME</option>
+                <option>MX</option><option>TXT</option><option>NS</option>
+              </select>
+            </div>
+            <div>
+              <label>名前 / ホスト</label>
+              <input id="addName" type="text" placeholder="@ or www">
+            </div>
+          </div>
+          <label>値 / コンテンツ</label>
+          <input id="addValue" type="text" placeholder="IPアドレス、ドメイン等">
+          <div class="form-row">
+            <div><label>TTL（秒）</label><input id="addTtl" type="number" value="3600"></div>
+            <div><label>優先度（MX用）</label><input id="addPriority" type="number" placeholder="10"></div>
+          </div>
+          <button class="btn-primary" onclick="addRecord()">追加</button>
+          <div id="addMsg"></div>
+        </div>
+
+        <!-- 自動登録 -->
+        <div id="tab-auto" class="tab-panel">
+          <p style="font-size:0.88rem;color:#555;margin-bottom:12px;">
+            ドメイン名と VPS の IP を入力すると、<code>@</code> と <code>www</code> の A レコードを自動登録します。
+          </p>
+          <label>ドメイン名</label>
+          <input id="autoDomain" type="text" placeholder="example.com">
+          <label>VPS IP アドレス</label>
+          <input id="autoIp" type="text" placeholder="auto-detect..." id="autoIp">
+          <button class="btn-success" onclick="autoRegister()">A レコードを自動登録</button>
+          <div id="autoMsg"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let selectedProviderId = null;
+
+// ---- プロバイダー種別切替 ----
+function onProvTypeChange() {
+  const t = document.getElementById('provType').value;
+  document.getElementById('cfFields').style.display     = t === 'cloudflare'   ? '' : 'none';
+  document.getElementById('conohaFields').style.display = t === 'conoha'       ? '' : 'none';
+  document.getElementById('vdFields').style.display     = t === 'value_domain' ? '' : 'none';
+}
+
+// ---- プロバイダー一覧 ----
+async function loadProviders() {
+  const res = await fetch('/api/dns/providers').then(r => r.json()).catch(() => []);
+  const div = document.getElementById('providerList');
+  if (!res.length) { div.innerHTML = '<p class="empty">未登録</p>'; return; }
+  div.innerHTML = res.map(p => `
+    <div class="provider-item ${p.id === selectedProviderId ? 'active' : ''}"
+         onclick="selectProvider('${p.id}')">
+      <span>${p.label}</span>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="provider-badge">${p.provider}</span>
+        <button class="btn-danger" onclick="event.stopPropagation();deleteProvider('${p.id}')">削除</button>
+      </div>
+    </div>`).join('');
+}
+
+function selectProvider(id) {
+  selectedProviderId = id;
+  document.querySelectorAll('.provider-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('zoneSelect').innerHTML = '<option value="">— ゾーン選択 —</option>';
+  document.getElementById('recordsArea').innerHTML = '<p class="empty">ゾーンを取得してください。</p>';
+}
+
+async function saveProvider() {
+  const type = document.getElementById('provType').value;
+  const data = new FormData();
+  data.set('provider', type);
+  data.set('label', document.getElementById('provLabel').value || type);
+  if (type === 'cloudflare') {
+    data.set('api_token', document.getElementById('cfToken').value);
+    data.set('api_key', ''); data.set('email', '');
+  } else if (type === 'conoha') {
+    data.set('api_key',   document.getElementById('conohaUser').value);
+    data.set('api_token', document.getElementById('conohaPass').value);
+    data.set('email',     document.getElementById('conohaTenant').value);
+  } else {
+    data.set('api_token', document.getElementById('vdToken').value);
+    data.set('api_key', ''); data.set('email', '');
+  }
+  const res = await fetch('/api/dns/providers', { method: 'POST', body: data }).then(r => r.json());
+  const msg = document.getElementById('provMsg');
+  if (res.ok) {
+    msg.className = 'msg ok'; msg.textContent = '✅ 登録しました';
+    loadProviders();
+  } else {
+    msg.className = 'msg err'; msg.textContent = '❌ ' + (res.error || '失敗');
+  }
+}
+
+async function deleteProvider(id) {
+  if (!confirm('このプロバイダーを削除しますか？')) return;
+  await fetch('/api/dns/providers/' + id, { method: 'DELETE' });
+  if (selectedProviderId === id) selectedProviderId = null;
+  loadProviders();
+}
+
+// ---- ゾーン ----
+async function loadZones() {
+  if (!selectedProviderId) { alert('プロバイダーを選択してください'); return; }
+  const zones = await fetch('/api/dns/zones?provider_id=' + selectedProviderId).then(r => r.json()).catch(() => []);
+  const sel = document.getElementById('zoneSelect');
+  sel.innerHTML = '<option value="">— ゾーン選択 —</option>';
+  (Array.isArray(zones) ? zones : []).forEach(z => {
+    const o = document.createElement('option');
+    o.value = z.id; o.textContent = z.name; sel.appendChild(o);
+  });
+}
+
+// ---- レコード一覧 ----
+async function loadRecords() {
+  const zoneId = document.getElementById('zoneSelect').value;
+  if (!zoneId || !selectedProviderId) return;
+  const area = document.getElementById('recordsArea');
+  area.innerHTML = '<p class="empty">読み込み中…</p>';
+  const records = await fetch(`/api/dns/records?provider_id=${selectedProviderId}&zone_id=${zoneId}`)
+    .then(r => r.json()).catch(() => []);
+  if (!records.length) { area.innerHTML = '<p class="empty">レコードなし</p>'; return; }
+  area.innerHTML = `<table>
+    <tr><th>タイプ</th><th>名前</th><th>値</th><th>TTL</th><th></th></tr>
+    ${records.map(r => `<tr>
+      <td><b>${r.record_type}</b></td>
+      <td>${r.name}</td>
+      <td>${r.value}</td>
+      <td>${r.ttl}</td>
+      <td><button class="btn-danger" onclick="deleteRecord('${r.id}')">削除</button></td>
+    </tr>`).join('')}
+  </table>`;
+}
+
+async function deleteRecord(recordId) {
+  const zoneId = document.getElementById('zoneSelect').value;
+  if (!confirm('このレコードを削除しますか？')) return;
+  const res = await fetch(`/api/dns/records/${recordId}?provider_id=${selectedProviderId}&zone_id=${zoneId}`, { method: 'DELETE' }).then(r => r.json());
+  if (res.ok) loadRecords();
+  else alert('削除失敗: ' + (res.error || ''));
+}
+
+// ---- レコード追加 ----
+async function addRecord() {
+  const zoneId = document.getElementById('zoneSelect').value;
+  if (!selectedProviderId || !zoneId) { alert('プロバイダーとゾーンを選択してください'); return; }
+  const data = new FormData();
+  data.set('provider_id', selectedProviderId);
+  data.set('zone_id', zoneId);
+  data.set('name',         document.getElementById('addName').value);
+  data.set('record_type',  document.getElementById('addType').value);
+  data.set('value',        document.getElementById('addValue').value);
+  data.set('ttl',          document.getElementById('addTtl').value);
+  const pri = document.getElementById('addPriority').value;
+  if (pri) data.set('priority', pri);
+  const res = await fetch('/api/dns/records', { method: 'POST', body: data }).then(r => r.json());
+  const msg = document.getElementById('addMsg');
+  if (res.ok) {
+    msg.className = 'msg ok'; msg.textContent = '✅ レコードを追加しました';
+    loadRecords();
+  } else {
+    msg.className = 'msg err'; msg.textContent = '❌ ' + (res.error || '失敗');
+  }
+}
+
+// ---- 自動登録 ----
+async function autoRegister() {
+  const zoneId = document.getElementById('zoneSelect').value;
+  if (!selectedProviderId || !zoneId) { alert('プロバイダーとゾーンを選択してください'); return; }
+  const domain = document.getElementById('autoDomain').value.trim();
+  const ip     = document.getElementById('autoIp').value.trim();
+  if (!domain || !ip) { alert('ドメインと IP を入力してください'); return; }
+  const data = new FormData();
+  data.set('provider_id', selectedProviderId);
+  data.set('zone_id', zoneId);
+  data.set('domain', domain);
+  data.set('vps_ip', ip);
+  const res = await fetch('/api/dns/auto-register', { method: 'POST', body: data }).then(r => r.json());
+  const msg = document.getElementById('autoMsg');
+  if (res.ok) {
+    msg.className = 'msg ok';
+    msg.textContent = `✅ ${res.created} 件の A レコードを登録しました`;
+    loadRecords();
+  } else {
+    msg.className = 'msg err'; msg.textContent = '❌ ' + (res.error || '失敗');
+  }
+}
+
+// ---- タブ ----
+function switchTab(name) {
+  document.querySelectorAll('.tab, .tab-panel').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ---- 初期化 ----
+(async () => {
+  loadProviders();
+  // VPS IP を自動取得して自動登録フォームに設定
+  try {
+    const r = await fetch('/api/detect-ip').then(x => x.json());
+    if (r.ip) document.getElementById('autoIp').value = r.ip;
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>

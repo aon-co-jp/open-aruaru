@@ -1,0 +1,8 @@
+id = "aruaru-os-recovery"
+name = "aruaru-OS-Recovery"
+version = "0.1.0"
+description = "OS/アプリ分離・ドライブ独立・アクセス復活・引越し・バックアップ・同期"
+kind = "plugin"
+requires = []
+provides = ["os-recovery", "drive-isolation", "access-restore", "backup", "migration", "sync"]
+detect_conflicts = ["kusanagi-backup", "windows-backup-restore"]

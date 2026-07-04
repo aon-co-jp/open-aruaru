@@ -1,0 +1,55 @@
+[server]
+host = "0.0.0.0"
+port = 3000
+public_url = "http://localhost:3000"
+
+[auth]
+magic_link_ttl_minutes = 60
+reminder_interval_days = 7
+
+[smtp]
+# メール送信を有効にする（true に変更してSMTP情報を入力）
+enabled = false
+
+# SMTPサーバー設定例:
+#   Gmail:       host = "smtp.gmail.com"   port = 587
+#   さくらVPS:   host = "mail.example.com" port = 587
+#   SendGrid:    host = "smtp.sendgrid.net" port = 587
+host = ""
+port = 587
+user = ""
+
+# パスワードは環境変数 ARUARU_SMTP_PASSWORD を推奨（セキュリティのため）
+# VPS上で: export ARUARU_SMTP_PASSWORD="your-password"
+# または直接記述（本番では非推奨）:
+password = ""
+
+from = "noreply@example.com"
+
+[reminders]
+enabled = true
+interval_days = 7
+
+[https_monitor]
+enabled = true
+scan_interval_secs = 300
+auto_configure = true
+certbot_email = "admin@example.com"
+web_server = "nginx"
+acme_webroot = "acme-webroot"
+renewal_interval_secs = 86400
+
+# PostgreSQL 主 DB（Ver 0.1c）— 未セットアップ時は deploy/postgres-init.sh を実行
+# ローカル開発のみ: data/config.toml で primary = "sqlite" に変更可
+[database]
+primary = "postgres"
+postgres_url = "postgres://aruaru:aruaru@127.0.0.1:5432/aruaru"
+cockroach_url = ""
+cockroach_sync_enabled = false
+cockroach_sync_interval_secs = 300
+
+# WunderGraph VersionLess API（docs/versionless-api.md）
+[versionless_api]
+enabled = true
+wundergraph_dir = "wundergraph"
+snapshot_on_client_gen = true

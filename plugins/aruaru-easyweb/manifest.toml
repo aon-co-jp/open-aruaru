@@ -1,0 +1,13 @@
+id = "aruaru-easyweb"
+name = "aruaru-easyweb"
+version = "0.1.0"
+description = "Web 系プラグインバンドル"
+kind = "bundle"
+plugins = [
+  "aruaru-domain",
+  "aruaru-dns",
+  "aruaru-vhost",
+  "aruaru-https",
+  "aruaru-redirect",
+  "aruaru-proxy-reload",
+]

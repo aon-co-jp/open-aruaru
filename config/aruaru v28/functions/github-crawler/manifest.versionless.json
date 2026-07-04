@@ -1,0 +1,10 @@
+{
+  "name": "github-crawler",
+  "revision": "vless-2026-06",
+  "runtime": "rust",
+  "crate": "aruaru-crawler",
+  "schedule": {
+    "everyMinutes": 5,
+    "allDay": true
+  }
+}

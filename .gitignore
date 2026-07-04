@@ -1,0 +1,128 @@
+﻿
+# ==================================================
+# Security / Secrets
+# ==================================================
+秘密鍵/
+*.pem
+*.key
+*.p12
+*.pfx
+*.ppk
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+.env
+.env.*
+!.env.example
+
+# ==================================================
+# Temporary / Upload / Backup
+# ==================================================
+.tmp.driveupload/
+backup/
+tmp/
+temp/
+*.tmp
+*.bak
+
+# ==================================================
+# Archives
+# ==================================================
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+
+# ==================================================
+# Rust build artifacts
+# ==================================================
+target/
+
+# ==================================================
+# Node / frontend artifacts
+# ==================================================
+node_modules/
+dist/
+build/
+
+# ==================================================
+# Editor local settings
+# ==================================================
+.cursor/
+.vscode/
+
+# ==================================================
+# OS generated files
+# ==================================================
+.DS_Store
+Thumbs.db
+
+# ==================================================
+# Nested independent repositories
+# ==================================================
+aon-temp/
+aruaru-db/
+aruaru-v28/
+aruaru_i/
+aruaru_i - コピー/
+ftp-auto-sync/
+iZoom/
+open-cuda/
+open-runo/
+open-web-server/
+URL/
+
+# Large media files
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Local VPS configuration
+config/vps.toml
+**/vps.toml
+**/*.local.toml
+
+# Unknown local artifacts
+m.hex
+m.js
+
+# Runtime / generated secrets
+*.secret
+*.secrets
+credentials.*
+secrets.*
+
+# ==================================================
+# Large media
+# ==================================================
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# ==================================================
+# Local VPS configuration
+# ==================================================
+config/vps.toml
+**/vps.toml
+**/*.local.toml
+
+# ==================================================
+# Local / unknown artifacts
+# ==================================================
+m.hex
+m.js
+
+# ==================================================
+# Additional secret patterns
+# ==================================================
+*.secret
+*.secrets
+credentials.*
+secrets.*
+
+# Download temporary directory
+.tmp.drivedownload/

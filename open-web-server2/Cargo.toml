@@ -1,0 +1,32 @@
+[package]
+name = "open-web-server"
+version = "0.1.0"
+edition = "2021"
+authors = ["open-aruaru project (iLumi)"]
+description = "Mission-critical, triple-layer web server for open-aruaru (Rust + Poem)"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+poem = { version = "3", features = ["compression", "websocket"] }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1"
+thiserror = "1"
+uuid = { version = "1", features = ["v7", "serde"] }
+blake3 = "1"
+# --- Layer 2 (open-runo) への正式接続経路。proto/runo.proto がマスター契約。 ---
+tonic = "0.12"
+prost = "0.13"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
+
+[build-dependencies]
+tonic-build = "0.12"
+aruaru-common = { path = "../aruaru-common" }
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+panic = "abort"

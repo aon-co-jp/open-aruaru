@@ -1,0 +1,27 @@
+type Query {
+  platformStatus: String!
+  devices: [Device!]!
+  domains: [Domain!]!
+  projects: [ProjectSource!]!
+  versionlessFunctions: [VersionlessFunction!]!
+  latestReadmeReport: ReadmeReport
+}
+
+type Mutation {
+  registerDevice(input: RegisterDeviceInput!): Device!
+  registerDomain(input: RegisterDomainInput!): Domain!
+  registerProjectSource(input: RegisterProjectInput!): ProjectSource!
+  crawlNow: Int!
+  generateReadmeReport: ReadmeReport!
+  invokeVersionlessFunction(functionName: String!): String!
+}
+
+type Device { id: ID!, name: String!, kind: String!, trusted: Boolean! }
+type Domain { id: ID!, domain: String!, primary: Boolean!, publicRoot: String!, vpsIp: String! }
+type ProjectSource { id: ID!, name: String!, githubUrl: String, localDrivePath: String, vpsDirectory: String, enabled: Boolean! }
+type VersionlessFunction { id: ID!, name: String!, capability: String!, currentRevision: String!, enabled: Boolean! }
+type ReadmeReport { id: ID!, title: String!, markdown: String!, targetFolder: String!, generatedAt: String! }
+
+input RegisterDeviceInput { name: String!, kind: String! }
+input RegisterDomainInput { domain: String!, vpsIp: String!, publicRoot: String!, primary: Boolean! }
+input RegisterProjectInput { name: String!, githubUrl: String, localDrivePath: String, vpsDirectory: String }

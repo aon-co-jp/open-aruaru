@@ -1,0 +1,7 @@
+{
+  "name": "readme-report-writer",
+  "revision": "vless-2026-06",
+  "runtime": "rust",
+  "crate": "aruaru-ai",
+  "output": "workspace/aruaru（README）/README.md"
+}

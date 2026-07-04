@@ -1,0 +1,8 @@
+id = "aruaru-proxy-reload"
+name = "aruaru-proxy-reload"
+version = "0.1.0"
+description = "Apache / Nginx 再読み込み"
+kind = "plugin"
+requires = ["aruaru-vhost"]
+provides = ["proxy-reload"]
+detect_conflicts = []

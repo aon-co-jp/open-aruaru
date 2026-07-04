@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web ターミナル — aruaru-core</title>
+<link rel="stylesheet" href="/static/css/core.css">
+<!-- xterm.js CDN -->
+<link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
+<script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
+<style>
+  .term-wrap{display:flex;flex-direction:column;height:100vh}
+  .term-header{display:flex;align-items:center;gap:1rem;padding:.6rem 1rem;
+    background:#1a1a2e;border-bottom:1px solid #333}
+  .term-header select{background:#0f0f1a;color:#e0e0e0;border:1px solid #444;
+    border-radius:6px;padding:.3rem .7rem}
+  #terminal{flex:1;padding:.5rem;background:#0d1117}
+  .ai-bar{display:flex;gap:.5rem;padding:.5rem 1rem;background:#1a1a2e;border-top:1px solid #333}
+  .ai-bar input{flex:1;background:#0f0f1a;color:#e0e0e0;border:1px solid #444;
+    border-radius:6px;padding:.4rem .8rem;font-size:.9rem}
+  .ai-bar button{background:#3b82f6;color:#fff;border:none;border-radius:6px;
+    padding:.4rem 1rem;cursor:pointer;font-size:.88rem;white-space:nowrap}
+</style>
+</head>
+<body style="margin:0;background:#0d1117">
+<div class="term-wrap">
+  <!-- ヘッダー：VPS 選択 + 接続ボタン -->
+  <div class="term-header">
+    <span style="color:#3b82f6;font-weight:700">⚡ Web ターミナル</span>
+    <select id="vpsSelect"><option value="">— VPS を選択 —</option></select>
+    <button class="btn-primary" onclick="connectSSH()" style="padding:.3rem .9rem">接続</button>
+    <button onclick="disconnectSSH()"
+      style="background:transparent;border:1px solid #ef4444;color:#ef4444;
+             border-radius:6px;padding:.3rem .7rem;cursor:pointer;font-size:.85rem">
+      切断
+    </button>
+    <span id="connStatus" style="color:#94a3b8;font-size:.85rem">未接続</span>
+    <a href="/" style="margin-left:auto;color:#94a3b8;font-size:.85rem">← 戻る</a>
+  </div>
+
+  <!-- xterm.js ターミナル本体 -->
+  <div id="terminal"></div>
+
+  <!-- AI コマンド自動実行バー -->
+  <div class="ai-bar">
+    <input type="text" id="aiCmd" placeholder="AI に操作を指示（例: Nginx をインストールして起動して）">
+    <button onclick="runAiCommand()">🤖 AI 自動実行</button>
+    <button onclick="clearTerm()"
+      style="background:transparent;border:1px solid #334155;color:#94a3b8;
+             border-radius:6px;padding:.4rem .7rem;cursor:pointer">クリア</button>
+  </div>
+</div>
+
+<script>
+const term    = new Terminal({ theme: { background:'#0d1117', foreground:'#e2e8f0', cursor:'#3b82f6' }, fontSize: 14, fontFamily: 'Consolas, monospace', cursorBlink: true });
+const fitAddon = new FitAddon.FitAddon();
+term.loadAddon(fitAddon);
+term.open(document.getElementById('terminal'));
+fitAddon.fit();
+window.addEventListener('resize', () => fitAddon.fit());
+
+let ws = null;
+
+// VPS 一覧を読み込み
+async function loadVpsList() {
+  const res = await fetch('/api/vps/');
+  const list = await res.json();
+  const sel  = document.getElementById('vpsSelect');
+  list.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v.id; opt.textContent = `${v.name} (${v.ip_address})`;
+    sel.appendChild(opt);
+  });
+}
+
+function connectSSH() {
+  const vpsId = document.getElementById('vpsSelect').value;
+  if (!vpsId) { term.write('\r\n\x1b[31m VPS を選択してください\x1b[0m\r\n'); return; }
+
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  ws = new WebSocket(`${proto}://${location.host}/api/ssh/${vpsId}/terminal`);
+
+  ws.onopen = () => {
+    document.getElementById('connStatus').textContent = '接続中';
+    document.getElementById('connStatus').style.color = '#22c55e';
+    term.write('\r\n\x1b[32m✓ SSH 接続しました\x1b[0m\r\n');
+  };
+  ws.onmessage = e => term.write(e.data);
+  ws.onclose   = () => {
+    document.getElementById('connStatus').textContent = '切断';
+    document.getElementById('connStatus').style.color = '#ef4444';
+    term.write('\r\n\x1b[31m接続が切断されました\x1b[0m\r\n');
+  };
+
+  // キー入力を SSH へ送信
+  term.onData(data => { if (ws && ws.readyState === 1) ws.send(data); });
+
+  // PTY リサイズ
+  term.onResize(({cols, rows}) => {
+    if (ws && ws.readyState === 1) ws.send(JSON.stringify({type:'resize', cols, rows}));
+  });
+}
+
+function disconnectSSH() { if (ws) ws.close(); }
+function clearTerm()     { term.clear(); }
+
+// AI コマンド自動実行
+async function runAiCommand() {
+  const cmd   = document.getElementById('aiCmd').value.trim();
+  const vpsId = document.getElementById('vpsSelect').value;
+  if (!cmd || !vpsId) return;
+
+  term.write(`\r\n\x1b[34m🤖 AI: ${cmd}\x1b[0m\r\n`);
+
+  const res  = await fetch('/api/ai/execute', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ vps_id: vpsId, instruction: cmd }),
+  });
+  const data = await res.json();
+
+  if (data.commands) {
+    for (const c of data.commands) {
+      term.write(`\r\n\x1b[33m$ ${c}\x1b[0m\r\n`);
+      if (ws && ws.readyState === 1) { ws.send(c + '\n'); await sleep(500); }
+    }
+  }
+}
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+loadVpsList();
+term.write('aruaru-core Web Terminal\r\nVPS を選択して「接続」を押してください\r\n\n');
+</script>
+</body>
+</html>

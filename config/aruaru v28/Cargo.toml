@@ -1,0 +1,31 @@
+[workspace]
+members = [
+  "crates/aruaru-core",
+  "crates/aruaru-versionless",
+  "crates/aruaru-ai",
+  "crates/aruaru-llm",
+  "crates/aruaru-crawler",
+  "crates/aruaru-drive-indexer",
+  "crates/aruaru-offline-cache",
+  "crates/aruaru-gql-gateway"
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+version = "0.28.0"
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+anyhow = "1"
+async-graphql = "7"
+async-graphql-poem = "7"
+chrono = { version = "0.4", features = ["serde"] }
+poem = "3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time", "fs", "process", "sync"] }
+uuid = { version = "1", features = ["serde", "v4"] }
+url = "2"
+walkdir = "2"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls"] }

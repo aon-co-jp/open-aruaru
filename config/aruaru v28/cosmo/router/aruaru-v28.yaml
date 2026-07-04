@@ -1,0 +1,11 @@
+version: 1
+subgraphs:
+  aruaru-platform:
+    routing_url: http://127.0.0.1:8787/graphql
+    schema:
+      file: ../subgraphs/aruaru-platform-v28.graphql
+notes:
+  transport: GraphQL Federation / WunderGraph Cosmo
+  no_rest: true
+  no_tauri: true
+  offline_cache_retention: "3 days, except audiocafe.tokyo retained"

@@ -1,0 +1,16 @@
+[Unit]
+Description=aruaru README.md to README.rs auto generator
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/aruaru-readme-auto-rs
+ExecStart=/opt/aruaru-readme-auto-rs/aruaru-readme-auto-rs --root /var/www/html --listen 127.0.0.1:7878 --output rs
+Restart=always
+RestartSec=5
+User=www-data
+Group=www-data
+Environment=RUST_LOG=info
+
+[Install]
+WantedBy=multi-user.target

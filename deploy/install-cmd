@@ -1,0 +1,3 @@
+#!/bin/bash
+# install aruaru-easyweb — ラッパー
+exec "$(dirname "$0")/aruaru" install "${1:-aruaru-easyweb}"

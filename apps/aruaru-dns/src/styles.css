@@ -1,0 +1,8 @@
+#guide-result ol {
+  margin-bottom: 0;
+}
+
+#guide-result .suggested {
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ファイル管理 — aruaru-core</title>
+<link rel="stylesheet" href="/static/css/core.css">
+<style>
+  .fm-layout{display:grid;grid-template-columns:220px 1fr;height:calc(100vh - 52px)}
+  .fm-sidebar{background:#1e293b;border-right:1px solid #334155;padding:.8rem;overflow-y:auto}
+  .fm-sidebar h4{color:#94a3b8;font-size:.78rem;text-transform:uppercase;margin-bottom:.5rem}
+  .fm-main{display:flex;flex-direction:column;overflow:hidden}
+  .fm-toolbar{display:flex;align-items:center;gap:.5rem;padding:.6rem 1rem;
+    background:#1e293b;border-bottom:1px solid #334155;flex-wrap:wrap}
+  .breadcrumb{flex:1;font-size:.88rem;color:#94a3b8;min-width:200px}
+  .breadcrumb span{cursor:pointer;color:#3b82f6} .breadcrumb span:hover{text-decoration:underline}
+  .fm-files{flex:1;overflow-y:auto;padding:.5rem 1rem}
+  .file-row{display:flex;align-items:center;gap:.8rem;padding:.5rem .6rem;
+    border-radius:6px;cursor:pointer;transition:.15s}
+  .file-row:hover{background:#1e293b}
+  .file-row.selected{background:#1e3a5f}
+  .file-icon{font-size:1.2rem;width:24px;text-align:center}
+  .file-name{flex:1;font-size:.9rem}
+  .file-size{color:#94a3b8;font-size:.8rem;width:70px;text-align:right}
+  .file-date{color:#94a3b8;font-size:.8rem;width:140px;text-align:right}
+  .drop-overlay{position:absolute;inset:0;background:rgba(59,130,246,.15);
+    border:2px dashed #3b82f6;display:none;align-items:center;justify-content:center;
+    font-size:1.4rem;color:#3b82f6;z-index:50}
+  .drop-overlay.active{display:flex}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <span class="logo">📁 ファイル管理 — aruaru-core</span>
+  <div class="nav-links">
+    <select id="vpsSelect" style="background:#1e293b;color:#e2e8f0;border:1px solid #334155;border-radius:6px;padding:.3rem .7rem">
+      <option value="">— VPS 選択 —</option>
+    </select>
+    <a href="/">← 戻る</a>
+  </div>
+</nav>
+
+<div class="fm-layout">
+  <!-- サイドバー：クイックアクセス -->
+  <div class="fm-sidebar">
+    <h4>クイックアクセス</h4>
+    <div class="quick-links">
+      <div class="file-row" onclick="navigate('/')">🏠 /（ルート）</div>
+      <div class="file-row" onclick="navigate('/var/www')">🌐 /var/www</div>
+      <div class="file-row" onclick="navigate('/etc/nginx')">⚙️ /etc/nginx</div>
+      <div class="file-row" onclick="navigate('/etc/apache2')">⚙️ /etc/apache2</div>
+      <div class="file-row" onclick="navigate('/home')">👤 /home</div>
+      <div class="file-row" onclick="navigate('/var/log')">📋 /var/log</div>
+      <div class="file-row" onclick="navigate('/tmp')">🗑️ /tmp</div>
+    </div>
+    <h4 style="margin-top:1.2rem">AI 自動操作</h4>
+    <textarea id="aiInstruction" placeholder="指示を入力&#10;例: aruaru-easyweb のバイナリをアップロードして"
+      style="width:100%;background:#0f172a;color:#e2e8f0;border:1px solid #334155;
+             border-radius:6px;padding:.5rem;font-size:.82rem;resize:vertical;min-height:80px"></textarea>
+    <button class="btn-primary" onclick="runAiFile()" style="width:100%;margin-top:.4rem">🤖 AI 実行</button>
+  </div>
+
+  <!-- メインエリア -->
+  <div class="fm-main" id="mainArea" style="position:relative">
+    <div class="drop-overlay" id="dropOverlay">📤 ドロップしてアップロード</div>
+
+    <div class="fm-toolbar">
+      <div class="breadcrumb" id="breadcrumb">/</div>
+      <button class="btn-secondary" onclick="uploadFile()">📤 アップロード</button>
+      <button class="btn-secondary" onclick="newFolder()">📁 新規フォルダ</button>
+      <button class="btn-secondary" onclick="refresh()">🔄</button>
+      <input type="file" id="fileInput" multiple style="display:none" onchange="handleFileSelect(event)">
+    </div>
+
+    <div class="fm-files" id="fileList">
+      <div class="loading" style="padding:2rem;color:#94a3b8;text-align:center">
+        VPS を選択してください
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/filemgr.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  platformStatus: PlatformStatus!
+  devices: [Device!]!
+  domains: [Domain!]!
+  servers: [Server!]!
+  projects: [Project!]!
+  offlineSources: [OfflineSource!]!
+  offlineCache(limit: Int): [OfflineCacheEntry!]!
+  activitySnapshots(limit: Int): [ActivitySnapshot!]!
+  driveFiles(limit: Int): [DriveFile!]!
+  latestReadmeReport: ReadmeReport
+  versionlessFunctions: [VersionlessFunction!]!
+}
+
+type Mutation {
+  registerDevice(input: RegisterDeviceInput!): Device!
+  registerDomain(input: RegisterDomainInput!): Domain!
+  registerServer(input: RegisterServerInput!): Server!
+  registerProjectSource(input: RegisterProjectInput!): Project!
+  registerOfflineSource(input: RegisterOfflineSourceInput!): OfflineSource!
+  scanDriveNow(input: ScanDriveInput!): [DriveFile!]!
+  crawlNow: Int!
+  generateReadmeReport(llmProfile: String): ReadmeReport!
+  runFullUpdateCycle: ReadmeReport!
+  markOfflineSourcesCached: Int!
+  runOfflinePrefetch: String!
+  purgeOfflineCache: Int!
+  invokeVersionlessFunction(functionName: String!): String!
+}
+
+type PlatformStatus { version: String! transport: String! noRest: Boolean! noTauri: Boolean! workspace: String! readmeFolder: String! projectBundleFolder: String! }
+type Device { id: ID! name: String! kind: String! trusted: Boolean! lastSeenAt: String }
+type Domain { id: ID! domain: String! primary: Boolean! publicRoot: String! vpsIp: String! verified: Boolean! registeredAt: String! }
+type Server { id: ID! name: String! vpsIp: String! uploadDirectory: String! publicRoot: String! sshOrFtpHint: String! createdAt: String! }
+type Project { id: ID! name: String! githubUrl: String localDrivePath: String vpsDirectory: String enabled: Boolean! registeredAt: String! }
+type OfflineSource { id: ID! label: String! sourceUrl: String! category: String! enabled: Boolean! lastCachedAt: String }
+type OfflineCacheEntry { id: ID! sourceId: ID! label: String! sourceUrl: String! sourceHost: String! localPath: String! contentType: String! cachedAt: String! keepForever: Boolean! bytes: Int! }
+type ActivitySnapshot { id: ID! projectName: String! source: String! summary: String! collectedAt: String! }
+type DriveFile { path: String! sizeBytes: Int! modifiedAt: String }
+type ReadmeReport { id: ID! title: String! markdown: String! targetFolder: String! filePath: String! generatedAt: String! }
+type VersionlessFunction { id: ID! name: String! capability: String! currentRevision: String! enabled: Boolean! noRest: Boolean! }
+
+input RegisterDeviceInput { name: String! kind: String! }
+input RegisterDomainInput { domain: String! vpsIp: String! publicRoot: String! primary: Boolean! }
+input RegisterServerInput { name: String! vpsIp: String! uploadDirectory: String! publicRoot: String! sshOrFtpHint: String }
+input RegisterProjectInput { name: String! githubUrl: String localDrivePath: String vpsDirectory: String }
+input RegisterOfflineSourceInput { label: String! sourceUrl: String! category: String! }
+input ScanDriveInput { path: String! maxDepth: Int maxFiles: Int }

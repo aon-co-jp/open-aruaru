@@ -1,0 +1,13 @@
+host                 = "0.0.0.0"
+port                 = 8080
+database_url         = "sqlite:data/aruaru.db"
+app_url              = "http://localhost:8080"
+token_expiry_minutes = 15
+admin_email          = "your@email.com"
+
+[smtp]
+host     = "smtp.gmail.com"
+port     = 587
+username = "your@gmail.com"
+password = "your-app-password"
+from     = "aruaru-easyweb <your@gmail.com>"

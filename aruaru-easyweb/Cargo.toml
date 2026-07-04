@@ -1,0 +1,54 @@
+[package]
+name    = "aruaru-easyweb"
+version = "0.2.0"
+edition = "2021"
+description = "aruaru EasyWeb — 第二の KUSANAGI / VPS Web Server Manager (Rust + Poem)"
+authors = ["aruaru project"]
+
+[[bin]]
+name = "aruaru-easyweb"
+path = "src/main.rs"
+
+[dependencies]
+# Web フレームワーク
+poem            = { version = "3", features = ["session", "cookie", "static-files", "websocket"] }
+tokio           = { version = "1", features = ["full"] }
+
+# DB
+sqlx            = { version = "0.7", features = ["sqlite", "runtime-tokio", "uuid", "chrono"] }
+
+# シリアライズ
+serde           = { version = "1", features = ["derive"] }
+serde_json      = "1"
+
+# SSH クライアント（Webターミナル・SFTP・自動操作）
+russh           = "0.44"
+russh-sftp      = "2"
+
+# SSH 鍵生成
+ed25519-dalek   = { version = "2", features = ["rand_core"] }
+rsa             = { version = "0.9", features = ["pem", "sha2"] }
+ssh-key         = { version = "0.6", features = ["ed25519", "rsa", "std"] }
+
+# 暗号・エンコード
+base64          = "0.22"
+rand            = "0.8"
+rand_core       = "0.6"
+
+# その他
+uuid            = { version = "1", features = ["v4", "serde"] }
+lettre          = { version = "0.11", features = ["tokio1-native-tls"] }
+config          = "0.14"
+tracing         = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tokio-cron-scheduler = "0.10"
+chrono          = { version = "0.4", features = ["serde"] }
+anyhow          = "1"
+reqwest         = { version = "0.12", features = ["json"] }
+thiserror       = "1"
+dotenv          = "0.15"
+futures-util    = "0.3"
+aruaru-ai-core  = { path = "../aruaru-ai-core" }
+
+[dev-dependencies]
+tokio-test = "0.4"

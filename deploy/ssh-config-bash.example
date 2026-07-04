@@ -1,0 +1,22 @@
+# bash / WSL / Git Bash 用 — このファイルを ~/.ssh/config にコピー
+#
+# Git Bash:
+#   cp deploy/ssh-config-bash.example ~/.ssh/config
+#   chmod 600 ~/.ssh/config
+#
+# WSL:
+#   cp deploy/ssh-config-bash.example ~/.ssh/config
+#   sed -i 's|/c/Users/noruk|/mnt/c/Users/noruk|g' ~/.ssh/config
+#   chmod 600 ~/.ssh/config
+
+Host conoha
+    HostName 160.251.237.162
+    User root
+    IdentityFile /c/Users/noruk/.ssh/conoha-vps.pem
+    IdentitiesOnly yes
+
+Host 160.251.237.162
+    HostName 160.251.237.162
+    User root
+    IdentityFile /c/Users/noruk/.ssh/conoha-vps.pem
+    IdentitiesOnly yes

@@ -1,0 +1,49 @@
+schema {
+  query: QueryRoot
+  mutation: MutationRoot
+}
+
+type StatusGql { version: String!, transport: String!, noRest: Boolean!, noTauri: Boolean!, workspace: String!, readmeFolder: String!, projectBundleFolder: String! }
+type DeviceGql { id: String!, name: String!, kind: String!, trusted: Boolean!, lastSeenAt: String }
+type DomainGql { id: String!, domain: String!, primary: Boolean!, publicRoot: String!, vpsIp: String!, verified: Boolean!, registeredAt: String! }
+type ServerGql { id: String!, name: String!, vpsIp: String!, uploadDirectory: String!, publicRoot: String!, sshOrFtpHint: String!, createdAt: String! }
+type ProjectGql { id: String!, name: String!, githubUrl: String, localDrivePath: String, vpsDirectory: String, enabled: Boolean!, registeredAt: String! }
+type OfflineSourceGql { id: String!, label: String!, sourceUrl: String!, category: String!, enabled: Boolean!, lastCachedAt: String }
+type SnapshotGql { id: String!, projectName: String!, source: String!, summary: String!, collectedAt: String! }
+type DriveFileGql { path: String!, sizeBytes: Int!, modifiedAt: String }
+type ReadmeReportGql { id: String!, title: String!, markdown: String!, targetFolder: String!, filePath: String!, generatedAt: String! }
+type FunctionGql { id: String!, name: String!, capability: String!, currentRevision: String!, enabled: Boolean!, noRest: Boolean! }
+
+input RegisterDeviceInput { name: String!, kind: String! }
+input RegisterDomainInput { domain: String!, vpsIp: String!, publicRoot: String!, primary: Boolean! }
+input RegisterServerInput { name: String!, vpsIp: String!, uploadDirectory: String!, publicRoot: String!, sshOrFtpHint: String }
+input RegisterProjectInput { name: String!, githubUrl: String, localDrivePath: String, vpsDirectory: String }
+input RegisterOfflineSourceInput { label: String!, sourceUrl: String!, category: String! }
+input ScanDriveInput { path: String!, maxDepth: Int, maxFiles: Int }
+
+type QueryRoot {
+  platformStatus: StatusGql!
+  devices: [DeviceGql!]!
+  domains: [DomainGql!]!
+  servers: [ServerGql!]!
+  projects: [ProjectGql!]!
+  offlineSources: [OfflineSourceGql!]!
+  activitySnapshots(limit: Int): [SnapshotGql!]!
+  driveFiles(limit: Int): [DriveFileGql!]!
+  latestReadmeReport: ReadmeReportGql
+  versionlessFunctions: [FunctionGql!]!
+}
+
+type MutationRoot {
+  registerDevice(input: RegisterDeviceInput!): DeviceGql!
+  registerDomain(input: RegisterDomainInput!): DomainGql!
+  registerServer(input: RegisterServerInput!): ServerGql!
+  registerProjectSource(input: RegisterProjectInput!): ProjectGql!
+  registerOfflineSource(input: RegisterOfflineSourceInput!): OfflineSourceGql!
+  scanDriveNow(input: ScanDriveInput!): [DriveFileGql!]!
+  crawlNow: Int!
+  generateReadmeReport(llmProfile: String): ReadmeReportGql!
+  runFullUpdateCycle: ReadmeReportGql!
+  markOfflineSourcesCached: Int!
+  invokeVersionlessFunction(functionName: String!): String!
+}

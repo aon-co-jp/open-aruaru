@@ -1,0 +1,20 @@
+[package]
+name = "aruaru-readme-auto-rs"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "FTP uploaded README.md watcher that generates responsive README.rs and optional README.html."
+
+[dependencies]
+anyhow = "1"
+ammonia = "4"
+chrono = { version = "0.4", features = ["serde"] }
+poem = "3"
+pulldown-cmark = "0.12"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time", "fs", "signal"] }
+walkdir = "2"
+
+[dev-dependencies]
+tempfile = "3"

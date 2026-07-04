@@ -1,0 +1,5 @@
+host         = "0.0.0.0"
+port         = 8081
+database_url = "sqlite:data/core.db"
+ai_core_url  = "http://localhost:8082"
+easyweb_url  = "http://localhost:8080"

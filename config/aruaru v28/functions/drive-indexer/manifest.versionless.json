@@ -1,0 +1,7 @@
+{
+  "name": "drive-indexer",
+  "revision": "vless-2026-06",
+  "runtime": "rust",
+  "crate": "aruaru-drive-indexer",
+  "permission": "allowlisted-local-roots-only"
+}

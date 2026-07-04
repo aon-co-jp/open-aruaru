@@ -1,0 +1,8 @@
+id = "aruaru-redirect"
+name = "aruaru-redirect"
+version = "0.1.0"
+description = "HTTP リダイレクト"
+kind = "plugin"
+requires = ["aruaru-vhost"]
+provides = ["redirect"]
+detect_conflicts = ["htaccess-redirect"]

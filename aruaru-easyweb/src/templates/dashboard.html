@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ダッシュボード — aruaru-easyweb</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+<nav class="navbar">
+  <span class="logo">🌐 aruaru-easyweb</span>
+  <div class="nav-links">
+    <a href="#domains">ドメイン</a>
+    <a href="#assistant">サーバー選択</a>
+    <a href="/settings">⚙️ 設定</a>
+    <form action="/api/auth/logout" method="POST" style="display:inline">
+      <button class="btn-logout">ログアウト</button>
+    </form>
+  </div>
+</nav>
+
+<main>
+  <!-- SSL アラート -->
+  <div id="ssl-alerts"></div>
+
+  <!-- ドメイン管理 -->
+  <section id="domains" class="card">
+    <div class="card-header">
+      <h2>ドメイン・サブドメイン管理</h2>
+      <button class="btn-primary" onclick="openModal()">＋ ドメイン追加</button>
+    </div>
+    <div id="domainList"><div class="loading">読み込み中…</div></div>
+  </section>
+
+  <!-- Webサーバー選択アシスタント -->
+  <section id="assistant" class="card">
+    <h2>🤖 Webサーバー選択アシスタント</h2>
+    <p style="color:var(--text-muted);margin-bottom:1rem">使用するプログラム言語・フレームワークを選んでください：</p>
+    <div class="fw-grid">
+      <button class="fw-btn" data-fw="wordpress">WordPress</button>
+      <button class="fw-btn" data-fw="laravel">Laravel</button>
+      <button class="fw-btn" data-fw="symfony">Symfony</button>
+      <button class="fw-btn" data-fw="node_js">Node.js</button>
+      <button class="fw-btn" data-fw="next_js">Next.js</button>
+      <button class="fw-btn" data-fw="nuxt_js">Nuxt.js</button>
+      <button class="fw-btn" data-fw="python">Python</button>
+      <button class="fw-btn" data-fw="django">Django</button>
+      <button class="fw-btn" data-fw="fast_api">FastAPI</button>
+      <button class="fw-btn" data-fw="rails">Rails</button>
+      <button class="fw-btn" data-fw="rust">Rust</button>
+      <button class="fw-btn" data-fw="go">Go</button>
+      <button class="fw-btn" data-fw="static_site">静的サイト</button>
+      <button class="fw-btn" data-fw="other">その他</button>
+    </div>
+    <div id="recommendation" class="recommendation hidden"></div>
+  </section>
+</main>
+
+<!-- ドメイン追加モーダル -->
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <h3>ドメイン追加</h3>
+    <label>ドメイン名（www なしで入力）</label>
+    <input type="text" id="mName" placeholder="example.com">
+    <label>Webサーバー</label>
+    <div class="radio-group">
+      <label><input type="radio" name="mWs" value="nginx" checked> Nginx <span class="badge">推奨</span></label>
+      <label><input type="radio" name="mWs" value="apache"> Apache</label>
+    </div>
+    <label>プロキシポート（任意）</label>
+    <input type="number" id="mPort" placeholder="例: 3000（Node.js等）">
+    <label class="checkbox-label">
+      <input type="checkbox" id="mHttps"> HTTPS を有効化（Let's Encrypt 自動取得）
+    </label>
+    <label class="checkbox-label">
+      <input type="checkbox" id="mApp"> このアプリ（aruaru-easyweb）自身のドメイン
+    </label>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="saveDomain()">登録・自動適用</button>
+      <button class="btn-secondary" onclick="closeModal()">キャンセル</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>

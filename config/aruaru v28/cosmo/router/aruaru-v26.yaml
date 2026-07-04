@@ -1,0 +1,12 @@
+version: 1
+router:
+  listen_addr: 0.0.0.0:3002
+federation:
+  subgraphs:
+    - name: aruaru-platform
+      routing_url: http://127.0.0.1:8787/graphql
+      schema_file: ../subgraphs/aruaru-platform-v28.graphql
+policy:
+  no_rest: true
+  no_tauri: true
+  versionless_functions: true

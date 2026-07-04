@@ -1,0 +1,14 @@
+# aruaru-brain-sync.timer
+# aruaru-brain-sync.service を5分毎に起動する。cron不要でRHEL系ディストリの流儀に合わせている。
+# 配置先: /etc/systemd/system/aruaru-brain-sync.timer
+
+[Unit]
+Description=Run aruaru-brain-sync.service every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

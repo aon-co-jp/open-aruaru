@@ -1,0 +1,4 @@
+# ローカル上書き（任意）— git 無視
+# 例:
+# ssh_key = "D:/keys/my.pem"
+# user = "ubuntu"

@@ -1,0 +1,8 @@
+id = "aruaru-dns"
+name = "aruaru-dns"
+version = "0.1.0"
+description = "DNS・ネームサーバー登録ガイドとレコード管理"
+kind = "plugin"
+requires = ["aruaru-domain"]
+provides = ["dns", "nameserver", "subdomain"]
+detect_conflicts = []

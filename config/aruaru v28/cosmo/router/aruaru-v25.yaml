@@ -1,0 +1,7 @@
+version: "1"
+router:
+  listen_addr: "0.0.0.0:3002"
+subgraphs:
+  aruaru_platform:
+    routing_url: "http://127.0.0.1:8787/graphql"
+    schema_path: "../subgraphs/aruaru-platform-v25.graphql"

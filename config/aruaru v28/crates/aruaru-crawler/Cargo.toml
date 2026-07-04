@@ -1,0 +1,13 @@
+[package]
+name = "aruaru-crawler"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+uuid.workspace = true
+serde.workspace = true
+tokio.workspace = true
+aruaru-core = { path = "../aruaru-core" }
