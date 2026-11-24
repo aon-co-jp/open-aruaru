@@ -1,3 +1,5 @@
+> Latest translations / 翻訳の最新版: [0-LATEST-TRANSLATIONS.md](0-LATEST-TRANSLATIONS.md)
+
 ﻿# open-aruaru
 
 open-aruaru は、Aruaru 系プロジェクト全体を整理・管理するための統合リポジトリです。
